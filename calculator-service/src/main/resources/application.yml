@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: calculator
+
+server:
+  port: 8083
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
