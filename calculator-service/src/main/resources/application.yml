@@ -4,7 +4,12 @@ spring:
 
 server:
   port: 8083
+  error:
+    include-message: always
 
 eureka:
   instance:
-    leaseRenewalIntervalInSeconds: 10
+    leaseRenewalIntervalInSeconds: 3
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-service:8761/eureka/

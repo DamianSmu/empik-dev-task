@@ -12,30 +12,32 @@ import java.util.regex.Pattern;
 public class CalculatorService {
 
     public final Pattern DEFAULT_DELIMITERS_REGEX = Pattern.compile("[\\n,]");
-
-    private final Pattern BETWEEN_SQUARE_BRACKETS_REGEX = Pattern.compile("(?<=\\[).+?(?=\\])");
+    public final Pattern BETWEEN_SQUARE_BRACKETS_REGEX = Pattern.compile("(?<=\\[).+?(?=\\])");
     private Pattern delimiters;
 
     public int add(String numbers) {
         Scanner scanner = new Scanner(numbers);
-
         if (numbers.startsWith("//")) {
             String line = scanner.nextLine();
             delimiters = extractDelimiters(line);
-            scanner.useDelimiter(delimiters);
         } else {
             delimiters = DEFAULT_DELIMITERS_REGEX;
-            scanner.useDelimiter(delimiters);
         }
+        scanner.useDelimiter(delimiters);
         List<Integer> integerList = new ArrayList<>();
         while (scanner.hasNext()) {
             String stringElement = scanner.next();
-            int element = Integer.parseInt(stringElement);
-            integerList.add(element);
+            if (!stringElement.isEmpty()) {
+                try {
+                    int element = Integer.parseInt(stringElement);
+                    integerList.add(element);
+                } catch (NumberFormatException e) {
+                    throw new InvalidNumbersFormatException();
+                }
+            }
         }
         handleNegatives(integerList);
-        int sum = integerList.stream().mapToInt(x -> x > 1000 ? 0 : x).sum();
-        return sum;
+        return integerList.stream().mapToInt(x -> x > 1000 ? 0 : x).sum();
     }
 
     public Pattern extractDelimiters(String line) {

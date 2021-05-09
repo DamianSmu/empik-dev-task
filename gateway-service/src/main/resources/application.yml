@@ -1,5 +1,22 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+
 spring:
   application:
     name: gateway
   servlet:
     context-path: /
+  data:
+    mongodb:
+      port: 27017
+      host: db
+
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 3
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-service:8761/eureka/

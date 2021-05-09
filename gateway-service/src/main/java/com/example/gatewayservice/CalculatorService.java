@@ -1,6 +1,9 @@
 package com.example.gatewayservice;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Map;
 
 @Service
 public class CalculatorService {
@@ -10,8 +13,7 @@ public class CalculatorService {
         this.calculatorClient = calculatorClient;
     }
 
-
-    public String addNumbers(String numbers) {
-        return calculatorClient.addNumbers(numbers);
+    public int addNumbers(@RequestBody Map<String, Object> payload) {
+        return calculatorClient.addNumbers(payload);
     }
 }

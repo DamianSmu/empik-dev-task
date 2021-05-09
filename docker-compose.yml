@@ -1,0 +1,73 @@
+version: "3.7"
+
+services:
+  db:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+  eureka-service:
+    build:
+      context: ./eureka-service
+      dockerfile: Dockerfile
+    ports:
+      - 8761:8761
+    networks:
+      - backend
+
+  gateway-service:
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - backend
+    restart: on-failure
+    depends_on:
+      - eureka-service
+      - db
+
+  calculator-service-1:
+    build:
+      context: ./calculator-service
+      dockerfile: Dockerfile
+    environment:
+      PORT: 8081
+    ports:
+      - 8081:8081
+    networks:
+      - backend
+    depends_on:
+      - gateway-service
+
+  calculator-service-2:
+    build:
+      context: ./calculator-service
+      dockerfile: Dockerfile
+    environment:
+      PORT: 8082
+    ports:
+      - 8082:8082
+    networks:
+      - backend
+    depends_on:
+      - gateway-service
+
+  calculator-service-3:
+    build:
+      context: ./calculator-service
+      dockerfile: Dockerfile
+    environment:
+      PORT: 8083
+    ports:
+      - 8083:8083
+    networks:
+      - backend
+    depends_on:
+      - gateway-service
+
+
+networks:
+  backend:
